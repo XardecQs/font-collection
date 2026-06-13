@@ -6,7 +6,7 @@
   };
 
   outputs =
-    { self, nixpkgs }:
+    { nixpkgs }:
     let
       forEachSystem = nixpkgs.lib.genAttrs nixpkgs.lib.systems.flakeExposed;
 
@@ -66,10 +66,7 @@
           fontPkgs = builtins.listToAttrs (
             map (name: {
               inherit name;
-              value = mkFontPkg (import nixpkgs {
-                inherit (pkgs.stdenv.hostPlatform) system;
-                config.allowUnfree = true;
-              }) name;
+              value = mkFontPkg pkgs name;
             }) fontDirs
           );
         in
